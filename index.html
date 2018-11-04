@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>Rock Paper Scissors</title>
+    </head>
+
+    <body>
+        <h1>Welcome to the game of Rock Paper and Scissors!</h1>
+        <p>Open the console to play the game!</p>
+        <script>
+            function computerPlay() {
+                // Randomly returns either "Rock", "Paper" or "Scissors"
+                return ["Rock", "Paper", "Scissors"][Math.floor(Math.random() * 3)];
+            }
+
+            function getPlayerSelection() {
+                // Gets player selection and returns formatted string
+                let playerSelection = prompt('Enter "Rock", "Paper" or "Scissors"');
+                while (!["Rock", "Paper", "Scissors"].includes(capitalizeFirstLetter(playerSelection))) {
+                        playerSelection = prompt('Try again. Enter "Rock", "Paper" or "Scissors"');
+                }
+                return capitalizeFirstLetter(playerSelection)
+            }
+
+            function capitalizeFirstLetter(string) {
+                // Takes a string and returns it lowercase with first letter capitalized
+                return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+            }
+
+            function playRound(playerSelection, computerSelection) {
+                // Plays one round of RPS and returns the result
+                if (playerSelection == computerSelection) {
+                    return [`Tie! ${playerSelection} matches ${computerSelection}.`, 0.5];
+                }
+                if (playerSelection == "Rock" && computerSelection == "Scissors"
+                || playerSelection == "Paper" && computerSelection == "Rock"
+                || playerSelection == "Scissors" && computerSelection == "Paper") {
+                    return [`You win! ${playerSelection} beats ${computerSelection}.`, 1];
+                } else {
+                    return [`You lose! ${computerSelection} beats ${playerSelection}.`, 0];
+                }
+            }
+
+            function calculateGameWinner(playerScore, rounds) {
+                // Calculates the winner of the game
+                return (playerScore > rounds/2) ? `You won the game ${playerScore} to ${rounds - playerScore}!`
+                     : (playerScore < rounds/2) ? `You lost the game ${playerScore} to ${rounds - playerScore}!`
+                     : `You tied the game ${rounds/2} to ${rounds/2}!`;
+            }
+
+            function game(rounds=5) {
+                // Plays n rounds of RPS and prints the winner
+                let playerScore = 0;
+                for (let i=0; i<rounds; i++) {
+                    let computerSelection = computerPlay();
+                    let playerSelection = getPlayerSelection();
+                    let result = playRound(playerSelection, computerSelection);
+                    console.log("Round", i+1, ":", result[0]);
+                    playerScore += result[1];
+                }
+                console.log("Final result:", calculateGameWinner(playerScore, rounds));
+            }
+
+        </script>
+    </body>
+</html>
